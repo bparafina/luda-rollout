@@ -1,0 +1,48 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: rollout
+spec:
+  version: v0.1.0
+  homepage: https://github.com/bparafina/krew-rollout
+  shortDescription: "Plays Rollout by Ludacris on every kubectl rollout"
+  description: |
+    This plugin wraps kubectl rollout so that every time you trigger a rollout,
+    it plays the Ludacris "Rollout (My Business)" audio clip and displays an
+    animated GIF before passing through to the real kubectl rollout command.
+
+    All arguments are forwarded transparently to kubectl rollout, and exit codes
+    are preserved. Use --no-rollout to skip media playback in CI or scripting.
+  platforms:
+  - selector:
+      matchLabels:
+        os: linux
+        arch: amd64
+    # TODO: update uri and sha256 after cutting a release
+    uri: https://github.com/bparafina/krew-rollout/releases/download/v0.1.0/krew-rollout_linux_amd64.tar.gz
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    bin: kubectl-rollout
+  - selector:
+      matchLabels:
+        os: linux
+        arch: arm64
+    # TODO: update uri and sha256 after cutting a release
+    uri: https://github.com/bparafina/krew-rollout/releases/download/v0.1.0/krew-rollout_linux_arm64.tar.gz
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    bin: kubectl-rollout
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: amd64
+    # TODO: update uri and sha256 after cutting a release
+    uri: https://github.com/bparafina/krew-rollout/releases/download/v0.1.0/krew-rollout_darwin_amd64.tar.gz
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    bin: kubectl-rollout
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: arm64
+    # TODO: update uri and sha256 after cutting a release
+    uri: https://github.com/bparafina/krew-rollout/releases/download/v0.1.0/krew-rollout_darwin_arm64.tar.gz
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    bin: kubectl-rollout
