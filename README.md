@@ -34,6 +34,24 @@ kubectl krew install rollout
 
 > Not yet available in the krew index. Requires cutting a GitHub release and submitting to [krew-index](https://github.com/kubernetes-sigs/krew-index).
 
+## Media Assets
+
+The audio and GIF assets are **not included** in this repository due to copyright.
+
+You must provide your own copies before building:
+
+```bash
+# Trim your audio to ~20 seconds starting at 10s in
+ffmpeg -ss 10 -i source.mp3 -t 20 -c copy internal/audio/rollout.mp3
+
+# Generate a GIF from video (3 seconds, 240px wide, 10fps)
+ffmpeg -ss 12 -i source.mp4 -t 3 \
+  -vf "fps=10,scale=240:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64[p];[s1][p]paletteuse" \
+  -loop 0 internal/gif/rollout.gif
+```
+
+Placeholder silent/blank assets work too — the build just needs the files to exist.
+
 ## Dependencies
 
 `chafa` is required for GIF rendering in most terminals (tmux, terminal.app, etc).

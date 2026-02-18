@@ -1,0 +1,12 @@
+# Beads issue tracker — contains assignee emails and names; never commit
+.beads/
+
+# Build artifacts
+dist/
+kubectl-rollout
+
+# Media assets — copyrighted content, must be sourced separately (see README)
+internal/audio/rollout.mp3
+internal/gif/rollout.gif
+media/rollout.mp3
+media/rollout.gif
