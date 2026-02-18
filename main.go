@@ -27,8 +27,6 @@ func main() {
 	}
 }
 
-// parseArgs strips --no-rollout from args and returns the cleaned args
-// plus a boolean indicating whether media should be skipped.
 func parseArgs(args []string) ([]string, bool) {
 	cleaned := make([]string, 0, len(args))
 	skip := false
