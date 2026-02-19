@@ -14,8 +14,8 @@ func main() {
 	args, skipMedia := parseArgs(os.Args[1:])
 
 	if !skipMedia {
-		gif.Render()
 		audio.Play()
+		gif.Render()
 	}
 
 	if err := passthrough.Run(args); err != nil {

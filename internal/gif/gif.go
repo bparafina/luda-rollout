@@ -48,7 +48,8 @@ func Render() {
 	renderAnsiAnimated(g)
 }
 
-// renderAnsiAnimated plays all GIF frames in-place using ANSI half-block art.
+// renderAnsiAnimated plays all GIF frames in-place using ANSI half-block art,
+// looping the animation to stay in sync with the audio clip.
 func renderAnsiAnimated(g *gif.GIF) {
 	bounds := g.Image[0].Bounds()
 	srcW := g.Config.Width
@@ -67,44 +68,50 @@ func renderAnsiAnimated(g *gif.GIF) {
 	}
 	termRows /= 2
 
-	// Composite canvas — GIF frames can be partial, so we draw onto a full canvas
-	canvas := image.NewRGBA(image.Rect(0, 0, srcW, srcH))
-
-	// Fill canvas with the GIF background color if set
+	// Determine background color for canvas resets between loops
+	var bgColor color.Color = color.Transparent
 	if g.BackgroundIndex < uint8(len(g.Image[0].Palette)) {
-		bg := g.Image[0].Palette[g.BackgroundIndex]
-		draw.Draw(canvas, canvas.Bounds(), &image.Uniform{bg}, image.Point{}, draw.Src)
+		bgColor = g.Image[0].Palette[g.BackgroundIndex]
 	}
 
+	// Loop the animation so it runs alongside the audio clip (~20s).
+	// 5 passes of a ~3s GIF ≈ 15s of visible animation before kubectl output appears.
+	const loops = 2
+
 	firstFrame := true
-	for i, frame := range g.Image {
-		// Composite this frame onto the canvas
-		draw.Draw(canvas, frame.Bounds(), frame, frame.Bounds().Min, draw.Over)
+	for loop := 0; loop < loops; loop++ {
+		// Reset canvas at the start of each loop
+		canvas := image.NewRGBA(image.Rect(0, 0, srcW, srcH))
+		draw.Draw(canvas, canvas.Bounds(), &image.Uniform{bgColor}, image.Point{}, draw.Src)
 
-		rendered := renderFrame(canvas, srcW, srcH)
+		for i, frame := range g.Image {
+			// Composite this frame onto the canvas
+			draw.Draw(canvas, frame.Bounds(), frame, frame.Bounds().Min, draw.Over)
 
-		if !firstFrame {
-			// Move cursor back up to overwrite previous frame
-			fmt.Fprintf(os.Stdout, "\x1b[%dA", termRows+1)
-		}
+			rendered := renderFrame(canvas, srcW, srcH)
 
-		fmt.Fprint(os.Stdout, rendered)
-		firstFrame = false
+			if !firstFrame {
+				// Move cursor back up to overwrite previous frame
+				fmt.Fprintf(os.Stdout, "\x1b[%dA", termRows+1)
+			}
 
-		// Respect frame delay (in 100ths of a second; minimum 60ms)
-		delay := g.Delay[i]
-		if delay <= 0 {
-			delay = 6 // 60ms default
-		}
-		time.Sleep(time.Duration(delay) * 10 * time.Millisecond)
+			fmt.Fprint(os.Stdout, rendered)
+			firstFrame = false
 
-		// Handle disposal
-		switch g.Disposal[i] {
-		case gif.DisposalBackground:
-			draw.Draw(canvas, frame.Bounds(), &image.Uniform{color.Transparent}, image.Point{}, draw.Src)
-		case gif.DisposalPrevious:
-			// Restore previous — for simplicity treat as background
-			draw.Draw(canvas, frame.Bounds(), &image.Uniform{color.Transparent}, image.Point{}, draw.Src)
+			// Respect frame delay (in 100ths of a second; minimum 60ms)
+			delay := g.Delay[i]
+			if delay <= 0 {
+				delay = 6 // 60ms default
+			}
+			time.Sleep(time.Duration(delay) * 10 * time.Millisecond)
+
+			// Handle disposal
+			switch g.Disposal[i] {
+			case gif.DisposalBackground:
+				draw.Draw(canvas, frame.Bounds(), &image.Uniform{color.Transparent}, image.Point{}, draw.Src)
+			case gif.DisposalPrevious:
+				draw.Draw(canvas, frame.Bounds(), &image.Uniform{color.Transparent}, image.Point{}, draw.Src)
+			}
 		}
 	}
 

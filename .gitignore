@@ -5,6 +5,9 @@
 dist/
 kubectl-rollout
 
+# asciinema raw recordings (large, regenerate with: asciinema rec)
+demo/*.cast
+
 # Media assets — copyrighted content, must be sourced separately (see README)
 internal/audio/rollout.mp3
 internal/gif/rollout.gif

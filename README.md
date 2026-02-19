@@ -2,6 +2,8 @@
 
 A kubectl krew plugin that plays Ludacris — *Rollout (My Business)* and renders an animated GIF every time you run `kubectl rollout`.
 
+![demo](demo/demo.gif)
+
 ## Install
 
 ### Option 1 — krew (local manifest)
@@ -51,21 +53,6 @@ ffmpeg -ss 12 -i source.mp4 -t 3 \
 ```
 
 Placeholder silent/blank assets work too — the build just needs the files to exist.
-
-## Dependencies
-
-`chafa` is required for GIF rendering in most terminals (tmux, terminal.app, etc).
-
-```bash
-# macOS
-brew install chafa
-
-# Linux
-apt install chafa   # Debian/Ubuntu
-dnf install chafa   # Fedora
-```
-
-iTerm2 and Kitty users get native inline rendering automatically — no `chafa` needed.
 
 ## Usage
 
