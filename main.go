@@ -19,9 +19,9 @@ func main() {
 	if !skipMedia {
 		entry := playlist.Pick()
 		dir := playlist.AssetDir()
-		fmt.Fprintf(os.Stdout, "\x1b[1m🎵  Now playing:\x1b[0m %s \x1b[2m—\x1b[0m %s\n", entry.Name, entry.Artist)
+		nowPlaying := fmt.Sprintf("\x1b[1m🎵  Now playing:\x1b[0m %s \x1b[2m—\x1b[0m %s", entry.Name, entry.Artist)
 		audio.Play(filepath.Join(dir, entry.Audio))
-		gif.Render(filepath.Join(dir, entry.GIF))
+		gif.Render(filepath.Join(dir, entry.GIF), nowPlaying)
 	}
 
 	if err := passthrough.Run(args); err != nil {
