@@ -22,6 +22,12 @@ var Tracks = []Entry{
 	{Name: "Ridin'", Artist: "Chamillionaire", Audio: "ridin.mp3", GIF: "ridin.gif"},
 	{Name: "Proud Mary", Artist: "CCR", Audio: "proud-mary.mp3", GIF: "proud-mary.gif"},
 	{Name: "Roll with the Changes", Artist: "REO Speedwagon", Audio: "roll-with-the-changes.mp3", GIF: "roll-with-the-changes.gif"},
+	{Name: "Rock and Roll", Artist: "Led Zeppelin", Audio: "rock-and-roll.mp3", GIF: "rock-and-roll.gif"},
+	{Name: "Start Me Up", Artist: "The Rolling Stones", Audio: "start-me-up.mp3", GIF: "start-me-up.gif"},
+	{Name: "Jumpin' Jack Flash", Artist: "The Rolling Stones", Audio: "jumpin-jack-flash.mp3", GIF: "jumpin-jack-flash.gif"},
+	{Name: "Thunderstruck", Artist: "AC/DC", Audio: "thunderstruck.mp3", GIF: "thunderstruck.gif"},
+	{Name: "Roll With It", Artist: "Steve Winwood", Audio: "roll-with-it.mp3", GIF: "roll-with-it.gif"},
+	{Name: "Like a Rolling Stone", Artist: "Bob Dylan", Audio: "like-a-rolling-stone.mp3", GIF: "like-a-rolling-stone.gif"},
 }
 
 // AssetDir returns the directory where playlist assets are stored.
