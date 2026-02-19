@@ -4,18 +4,22 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/bparafina/krew-rollout/internal/audio"
 	"github.com/bparafina/krew-rollout/internal/gif"
 	"github.com/bparafina/krew-rollout/internal/passthrough"
+	"github.com/bparafina/krew-rollout/internal/playlist"
 )
 
 func main() {
 	args, skipMedia := parseArgs(os.Args[1:])
 
 	if !skipMedia {
-		audio.Play()
-		gif.Render()
+		entry := playlist.Pick()
+		dir := playlist.AssetDir()
+		audio.Play(filepath.Join(dir, entry.Audio))
+		gif.Render(filepath.Join(dir, entry.GIF))
 	}
 
 	if err := passthrough.Run(args); err != nil {

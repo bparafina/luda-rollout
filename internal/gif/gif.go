@@ -20,13 +20,21 @@ var gifData []byte
 
 const cols = 80 // output width in terminal columns
 
-// Render displays the embedded GIF animated in the terminal.
+// Render displays the GIF at path animated in the terminal.
+// If path is empty or the file does not exist, the embedded rollout GIF is used.
 // Protocol priority:
 //  1. Kitty graphics protocol  (Kitty terminal)
 //  2. iTerm2 inline image      (iTerm2 / WezTerm)
 //  3. Animated ANSI half-block art (▀ + 24-bit color — works everywhere)
-func Render() {
-	g, err := gif.DecodeAll(bytes.NewReader(gifData))
+func Render(path string) {
+	data := gifData
+	if path != "" {
+		if d, err := os.ReadFile(path); err == nil {
+			data = d
+		}
+	}
+
+	g, err := gif.DecodeAll(bytes.NewReader(data))
 	if err != nil || len(g.Image) == 0 {
 		renderFallback()
 		return
@@ -75,7 +83,7 @@ func renderAnsiAnimated(g *gif.GIF) {
 	}
 
 	// Loop the animation so it runs alongside the audio clip (~20s).
-	// 5 passes of a ~3s GIF ≈ 15s of visible animation before kubectl output appears.
+	// 2 passes of a ~3s GIF ≈ 6s of visible animation before kubectl output appears.
 	const loops = 2
 
 	firstFrame := true
