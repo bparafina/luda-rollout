@@ -4,6 +4,10 @@ A kubectl krew plugin that plays Ludacris — *Rollout (My Business)* and render
 
 ![demo](demo/demo.gif)
 
+### Playlist — different track every time
+
+![playlist demo](demo/playlist-demo.gif)
+
 ## Install
 
 ### Option 1 — krew (local manifest)
